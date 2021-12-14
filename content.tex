@@ -1,0 +1,303 @@
+\section{Introduction}
+
+The work of \citeauthor{reardon2018levels}~\cite{reardon2018levels} assesses the impact of different school admission policies on the probability of various ethnic groups to be admitted using an agent-based simulation model with parameters ``grounded in real-world''.
+Real-life experiments over such sociotechnical systems are complex and costly to setup and run over a long time period (\emph{e.g.}, years) and can in general only be done over limited pilot projects. 
+By enabling computational experiments over school admission policies, \citeauthor{reardon2018levels} provides a useful environment for researchers focusing on the fairness issues related to the deployment and use of artificial intelligence algorithms.
+The proposed model is discussed in great length in the original paper, thus providing a solid basis for understanding it. 
+However, the code of this simulation model is not publicly available. 
+In addition, when re-implementing the model, we have faced several issues related to important parts of the model.
+First, some values of parameters were missing--e.g., initial colleges' quality--while others were used inconsistently along the paper--such as affirmative actions.
+Second, some parameters described--in natural language--in the paper were actually unused by the model. We tried to guess the appropriate formulas to fit the results and the model description of the original paper.
+Nonetheless, we were able to guess their probable values in most cases by trying and comparing our results with those reported in the paper, thus following a trial and error strategy. 
+However, we did not succeed in replicating all the
+results.
+This paper describes in details our replication attempt.
+
+\section{Model of college admissions}
+
+\citeauthor{reardon2018levels}~\cite{reardon2018levels} proposes an agent-based simulation of the college admission process, mainly based on the model described in previous work~\cite{reardon2016agent}, with the addition of a racial attribute to students and the inclusion of positive discrimination policies.
+We provide below a brief overview of the model, referring the interested reader to the original paper for more details.
+
+The model consists in two sets of agents: colleges and students. 
+A new population of 10,000 students is randomly drawn at each iteration, in which one iteration corresponds to one year. 
+The 40 colleges are kept for the completely simulation and evolve according to the admissions.
+
+Each iteration is composed of three steps:
+
+\begin{description}
+
+\item[Application step.] Students decide on the ``best'' subset of colleges to apply by taking into account their probability of admission depending on their academic achievement and on each college's quality, with a noisy perception of variables varying with financial resources. That is, \textquote[{\cite{reardon2018levels}}]{high-resources families have better information about college quality}.
+To mimic societal biases, both academic achievements and financial resources depend on the race attribute.
+
+\item[Admission step.] Colleges rank applications based on noisy version of academic achievements. 
+A percentage of the (best) students is admitted depending on the admission rate of the college.
+
+\item[Enrollment step.] Students enroll into the best college in which they are admitted.
+
+\end{description}
+
+At the end of each iteration, the colleges' admission rate and quality as well as their probability of admission are updated.
+
+Starting from year 15 (the previous years are used for model
+convergence), positive discrimination policies are put in place by a subset of colleges, mostly the top 4.
+More precisely, three type of policies can be introduced:
+
+\begin{description}
+
+\item[Socioeconomic-based affirmative action.] During admission, colleges favor low-income students by increasing their perceived academic achievement.
+
+\item[Race-based recruiting.] During application, students from minority groups favor colleges by increasing their perceived quality, increasing the likelihood of an application.
+
+\item[Race-based affirmative action.] During admission, colleges favor students from minority groups by increasing their perceived academic achievement.
+
+\end{description}
+
+The original experiments are concerned with the impact of using socioeconomic-based (SES) affirmative action combined with race-based recruiting instead of race-based affirmative action. The former two are therefore mostly used together by the colleges.
+
+\begin{figure}
+  \centering
+  \begin{tikzpicture}[
+    stud/.style={fill=PuOr-K},
+    coll/.style={fill=PuOr-E},
+    both/.style={diagonal fill={PuOr-K}{PuOr-E}},
+    iter/.style={->, dashed},
+    ]
+    \node[stud] (Race) {Race};
+    \node[right=of Race, stud, align=center] (Ach) {Achievement,\\ Resources};
+    \node[below=of Ach, coll] (Qual) {Quality};
+    \node[right=of Ach, both] (PAdmit) {P(Admission)};
+    \node[right=of PAdmit, both] (Apply) {Applications};
+    \node[below=of Apply, both] (Admit) {Admissions};
+    \node[below=of Admit, both] (Enroll) {Enrollment};
+    \node[fit=(Apply)(Admit)(Enroll), draw, opacity=.5] (AppAdmEnr) {};
+    \draw[->] (Race) -- (Ach);
+    \draw[->] (Ach) -- (PAdmit);
+    \draw[->] (Qual) -- (PAdmit);
+    \draw[->] (PAdmit) -- (Apply);
+    \draw[->] (Apply) -- (Admit);
+    \draw[->] (Admit) -- (Enroll);
+    \draw[->] (Qual) -- (AppAdmEnr);
+    \draw[->] (Ach) to[bend left] (AppAdmEnr.100);
+    \draw[iter] (Admit) -- (PAdmit);
+    \draw[iter] (Ach) -- (Qual);
+    \draw[iter] (Enroll) -- (Qual);
+    \draw[iter] (Qual) to [out=180,in=270,loop,looseness=4.8] (Qual);
+  \end{tikzpicture}
+  \caption{Simplified causal model of~\cite{reardon2018levels} with most of the variables being abstracted away. 
+Students' variables are \colorbox{PuOr-K}{orange}, colleges' variables are \colorbox{PuOr-E}{purple}, while finally variables defined for pairs of student and college have both colors. 
+Dashed arrows represent dependency over past iterations.}
+  \label{fig:model}
+\end{figure}
+
+\section{Method}
+
+We have mostly followed the detailed description of the model given in~\cite[Appendix~C]{reardon2018levels}. 
+We have also referred to~\cite{reardon2016agent}, which is often cited by the authors as an inspiration for this work. 
+Code for this latter model is available in the (proprietary) Stata programming language~\cite{reardon2016stata}.  
+We have read this code for clarification but we were not able to run it\footnote{Executing this model seems to require Stata version 11, but the dependency ``\texttt{college sorting napps.do}'' is not distributed in the archive.}. 
+We have contacted the authors in May 2021 but got no
+answer as of February 2022.
+
+For our implementation, we have used the Python programming language, with most of the processing done using \href{https://numpy.org/}{NumPy}.
+We use \href{https://scikit-learn.org/}{scikit-learn} for the logistic regression (but also used
+\href{https://www.statsmodels.org/}{statsmodels} during development).
+
+We have experimented with the \href{https://xarray.dev/}{Xarray} library, which provides labeled multi-dimensional arrays. 
+Our motivation was to deduplicate the join between students and colleges. 
+However, we have achieved no storage or time improvement by doing so.
+
+In addition to the replication effort, we focused on execution speed to be able to use the model as a synthetic data generator in other works. For this purpose, random data for all future iterations is drawn at initialization.
+
+\section{Difficulties}
+
+In this section, we present the main issues encountered with respect to the description of the model in the original paper~\cite{reardon2018levels}. 
+Hereafter, inconsistent descriptions are quoted but we refer the reader to the full paper for more context.
+Afterwards, we describe the interpretation that we have followed for the results presented in this paper.
+
+\paragraph{Socioeconomic status (SES)-based affirmative action.}
+
+\begin{itemize}
+  
+\item\textquote[{\cite[Section~3]{reardon2018levels}}]{It is during the calculation of $A^{**}_{cs}$ that colleges with an affirmative action policy apply additional weight to a student's perceived admissions desirability in accordance with that policy. 
+This additional weight is captured by the term $T_c \times [G \times (Black_s \mid Hispanic_s ) + H \times resources_s ]$.  
+In this term, $T_c$ indicates whether a college has an affirmative action policy, \textelp{} $H$ is the size of the weight given to students under SES-based affirmative action
+policies, which is applied \emph{linearly in accordance with the student's resources}, $resources_s$.} 
+
+\item\textquote[{\cite[Section~4]{reardon2018levels}}]{SES-affirmative action (corresponding to an increase in admissions consideration of 0, 50, 100 and 150 \emph{achievement points for each decrease of one standard deviation} in applicants' resources);}.
+
+\item\textquote[{\cite[Appendix~C]{reardon2018levels}}]{The size of the affirmative action weights we use are based on our estimate of a 1.3 standard deviation relative race weight evident in selective admissions \textelp{}. 
+Given this estimate, we establish a ``moderate'' race-based affirmative action policy that gives a 0.75 standard deviation, or 150 points on our academic achievement scale, weight to Black or Hispanic students.}
+
+\end{itemize}
+
+Using $H \times resources_s$ as in the first quite would advantage high-income students, which is the opposite of the objective. Moreover, the weight would not follow the description of the next two quotes, which involve the standard deviation. In our implementation, a weight $H \times \max(-\mathrm{zscore}({resources}_s), 0)$ is added to the score of low-income students students, with $\mathrm{zscore}$ being the standard score\footnote{The number of standard deviations by which the value of a raw score is above or below the mean value of what is being observed or measured} with respect to $resources$, and $H$ the size of the weight (\emph{e.g.}, 0, 50, 100 and 150). 
+We keep only negative values of the standard score to impact only low-income students (``for each decrease of one standard
+deviation''). Note that our interpretation is not totally satisfactory (see Section~\ref{sec:results}), however we had no success either with the formula of he first quote.
+
+\paragraph{Quality and own achievement reliability.}
+
+\begin{itemize}
+
+\item\textquote[{\cite[Table~1]{reardon2018levels}}]{Quality
+reliability and own achievement reliability \emph{bounded by minimum values of 0.5 and maximum values of 0.9.}}
+
+\item\textquote[{\cite[Appendix~C]{reardon2018levels}}]{the reliability of student perceptions of their own achievement, is a function of student resources and \emph{bounded between 0.5 and 0.9}}
+
+\item\textquote[{\cite[Appendix~C]{reardon2018levels}}]{the reliability of student perceptions of college quality, is a function of student resources and \emph{bounded between 0.5 and 0.7}}
+
+\end{itemize}
+
+We assume that 0.7 is a typo and clip the values between 0.5 and 0.9.
+
+\paragraph{Race-targeted recruiting.}
+
+\textquote[{\cite[Appendix~C]{reardon2018levels}}]{Colleges' binary recruitment statuses ($S_c$)---which had previously all been 0---are set based on model parameters that determine which schools will use recruitment \textelp{}
+Utility is then calculated using model-specific recruitment magnitude values ($L$): $ U^*_{cs} = a_s + b_s \times Q^*_{cs} + R_{sc} $. }
+
+There is no use of $S_c$ in the document apart from the definition, and $R_{sc}$ is also not defined. 
+We assume that it is a typo and that $S_c$ is to be understood as $R_{sc}$. 
+The recruitment magnitude value $L$ is not used (but is an experimental parameter later). 
+No specific definition of race-targeted recruitment is given but from \blockquote[{\cite[Section~3]{reardon2018levels}}]{Recruitment efforts work in part by making students aware of specific colleges and by making these colleges seem more appealing to prospective students through additional, targeted contact with those students.} our understanding is that targeted groups have an increased chance of applying to colleges using race-targeted recruitment. 
+However, the race attribute is not used in conjunction with $L$.
+
+We assume that the race-targeted recruitment weight is added to the perceived utility of attending colleges for minority students, such that \[ U^*_{cs} = a_s + b_s \times Q^*_{cs} + R \times (Black_s \mid Hispanic_s ) \times {T'}_c \] in which ${T'}_c$ indicates whether a college uses race-targeted recruitment and $R$ is the recruitment weight.
+
+\paragraph{Quality update window.}
+
+It is unclear whether the quality of colleges depends only on the previous year or on the past five years:
+
+\begin{itemize}
+
+\item\textquote[{\cite[Appendix~C]{reardon2018levels}}]{Colleges' quality values ($Q_c$) are \emph{updated based on the incoming class of enrolled students before the next year's cohort} of students begins the application process}.
+
+\item\textquote[{\cite[Figure~C5]{reardon2018levels}}]{College quality is \emph{calculated as the five-year running average} of enrolled student caliber.}
+
+\end{itemize}
+
+Using only the previous year to update colleges' quality gives satisfying results (see Figure~\ref{fig:c5}). 
+Thus, we assume that the five-year running average is not used for the model but only to smooth the plots.
+
+\paragraph{Initial college quality.}
+
+\textquote[{\cite[Appendix~C]{reardon2018levels}}]{Initial college quality ($Q$) is normally distributed}, but the values of the mean and variance are not given. 
+We relies on the values from~\cite{reardon2016agent}: $Q \sim \mathcal{N}(1070, 130)$.
+
+\paragraph{Admission probability estimation.}
+
+After the fifth iteration, each iteration requires fitting a logistic model on submitted application over the past five years.
+
+Apart from a significant speed increase, we observe no difference when fitting on the previous year only (and using the previously fitted model's parameters to initialize the new fit). 
+However, our code still uses the past five years.
+
+\section{Experiments}
+
+Figures~\ref{fig:c1} to~\ref{fig:2} present side by side examples of reproduction, with plots taken from the original paper~\cite{reardon2018levels} on the right (b) and replication results on the left (a).
+We attempt to replicate a representative subset of the plots, covering the gist of the model (Figures~\ref{fig:c1}, \ref{fig:c5} and \ref{fig:3a}), SES-based affirmative action and race-based recruitment (Figures~\ref{fig:c4} and \ref{fig:3a}), race-based affirmative action (Figure~\ref{fig:c2}), and the main results of the original paper (Figures~\ref{fig:2}  and \ref{fig:3a}). We use the same legend as the original paper, with college not using positive discrimination policy in \colorbox{sns-blue}{blue} and using positive discrimination policy in \colorbox{sns-orange}{orange}.
+Figures~\ref{fig:A23} and~\ref{fig:A45} present the impact of the different strategies on the final (years 25 to 29) composition--racial and socioeconomic\footnote{Our socioeconomic distribution is represented by the quintiles of the \emph{full} students' resources distribution (not only the enrolled students).}--of enrolled students in colleges for our replication (in \colorbox{sns-red}{red}) and the original paper (in \colorbox{sns-cyan}{cyan}).
+Our replication effort involved experimenting with the full set of plots presented in the original paper. 
+We also resorted to additional plots (not presented in the original paper or the current one) to assess the correlation between probability admission and academic achievement.
+
+\begin{figure}
+  \centering
+  \subfloat[Replication]{{\includegraphics[width=.5\linewidth]{figures/figC1.png}}}%
+  \hfill%
+  \subfloat[Original (Figure~C1)]{{\includegraphics[width=.5\linewidth]{figures/reardon_figC1.png}}}%
+  \caption{Minority enrollment without using affirmative action or recruiting.}
+  \label{fig:c1}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \subfloat[Replication]{{\includegraphics[width=.5\linewidth]{figures/figC2.png}}}%
+  \hfill%
+  \subfloat[Original (Figure~C2)]{{\includegraphics[width=.5\linewidth]{figures/reardon_figC2.png}}}%
+  \caption{Minority enrollment with the top four schools using ``real-world'' race-based affirmative action (weight of 260).}
+  \label{fig:c2}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \subfloat[Replication]{{\includegraphics[width=.5\linewidth]{figures/figC4.png}}}%
+  \hfill%
+  \subfloat[Original (Figure~C4)]{{\includegraphics[width=.5\linewidth]{figures/reardon_figC4.png}}}%
+  \caption{Minority enrollment with the top four colleges using strong SES-based affirmative action (weight of 150) and strong race-based recruitment (weight of 100).}
+  \label{fig:c4}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \subfloat[Replication]{{\includegraphics[width=.5\linewidth]{figures/figC5.png}}}%
+  \hfill%
+  \subfloat[Original (Figure~C5)]{{\includegraphics[width=.5\linewidth]{figures/reardon_figC5.png}}}%
+  \caption{College quality with the top four colleges using strong SES-based affirmative action (weight of 150) and strong race-based recruitment (weight of 100).}
+  \label{fig:c5}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \subfloat[Replication]{{\includegraphics[width=.65\linewidth]{figures/fig3A.png}}}%
+  \subfloat[Original (Figure~3a)]{{\includegraphics[width=.35\linewidth]{figures/reardon_fig3A.png}}}%
+  \caption{Mean achievement and proportion minority with top four schools using (respectively not using) strong SES-based affirmative action (weight of 150) and strong race-based recruitment (weight of 100) in \colorbox{sns-blue}{blue} (respectively \colorbox{sns-orange}{orange}). 
+  Arrows start at a school's position in year 14 when it was not using affirmative action, and end at the school's position in year 29.}
+  \label{fig:3a}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \subfloat[Replication]{{\includegraphics[width=.75\linewidth]{figures/fig2.png}}} \\
+  \subfloat[Original (Figure~2)]{{\includegraphics[width=.7\linewidth]{figures/reardon_fig2.png}}}%
+  \caption{Black (\colorbox{sns-gray}{gray}) and Hispanic (\colorbox{sns-green}{green}) enrollment in colleges using SES-based affirmative action and race-based recruitment, as a share of estimated enrollment under race-based affirmative action (using estimated real-world affirmative action weight 260).}
+  \label{fig:2}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \subfloat[Racial composition (Figure~A2)]{{\includegraphics[width=.75\linewidth]{figures/figA2.png}}} \\
+  \subfloat[Socioeconomic composition (Figure~A3)]{{\includegraphics[width=.75\linewidth]{figures/figA3.png}}}
+  \caption{Composition of colleges using SES-based affirmative action
+and race-based recruitment, by affirmative action and recruitment weights.}
+  \label{fig:A23}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \subfloat[Racial composition (Figure~A4)]{{\includegraphics[width=.75\linewidth]{figures/figA4.png}}} \\
+  \subfloat[Socioeconomic composition (Figure~A5)]{{\includegraphics[width=.75\linewidth]{figures/figA5.png}}} 
+  \caption{Composition of colleges using SES-based and racial affirmative actions, by affirmative action weights.}
+  \label{fig:A45}
+\end{figure}
+
+\section{Results}\label{sec:results}
+
+Our objective was to replicate the overall tendencies of the model. 
+We compare below our replicated results to the original results.
+
+\begin{description}
+
+\item[Figure~\ref{fig:c1}: success.] The results without using positive discrimination policy presented on Figure~\ref{fig:c1} are similar to the original paper.
+
+\item[Figure~\ref{fig:c2}: partial success.] Figure~\ref{fig:c2} shows that we replicated the main trends but still indicates an issue with race-based affirmative action: our replication leads to a lower impact on minority students.
+
+\item [Figure~\ref{fig:c4}: partial success.] Looking at Figure~\ref{fig:c4}, the combination of SES-based affirmative action and race-based recruitment is satisfactory. 
+However, race-based and SES-based affirmative actions use the same mechanism, which lead us to believe that race‐based recruitment is successfully replicated with a potential issue for SES-based affirmative (as with Figure~\ref{fig:c2}).
+
+\item [Figure~\ref{fig:c5}: success.]  The behavior of quality on Figure~\ref{fig:c5} is similar to the original paper, indicating the adequacy of our quality initialization.
+
+\item[Figure~\ref{fig:3a}: partial success.]  Figure~\ref{fig:3a} suffers from the same issue of affirmative actions as Figure~\ref{fig:c2} but the general behavior is similar to the paper. 
+It is important to note that this figure corresponds to an average over 10 runs (as the original paper), which requires the colleges to be sorted by quality.
+
+\item[Figure~\ref{fig:2}: partial success.]  Figure~\ref{fig:2} shows a successful replication of the general tendency of the model (\emph{i.e.}, the relative values) and a failure in replicating the absolute numbers, probably due to the issue related to the affirmative action observed above.
+
+\item[Figure~\ref{fig:A23}: partial success.] Figure~\ref{fig:A23} shows a successful replication regarding the racial impact of targeted recruiting and SES-based affirmative action strategies, but highlight an issue with the socioeconomic composition. Indeed the impact of our SES-based affirmative action is higher than the original paper.
+
+\item[Figure~\ref{fig:A45}: partial success.] Figure~\ref{fig:A45} lead the same observation that SES-based affirmative action is not behaving as the original paper. However race-based affirmative action is satisfactory. Note that the combinations (race weight = 150, SES weight = 150) and (race weight = 300, SES weight = 75) are not presented in the original paper.
+
+\end{description}
+
+\section{Conclusion}
+
+In this paper, we presented our attempt at replicating the model presented by \citeauthor{reardon2018levels}~\cite{reardon2018levels}.
+The overall behavior is successfully reproduced, with discrepancies regarding the impact of positive discrimination policies.
+We attribute the later to issues with our understanding of the paper, thus highlighting the difficulties of describing complex systems.
+The resulting implementation, while not producing results entirely faithful to the ones from the original paper, can still be useful to simulate data grounded in real-world for fairness applications in the context of college admission.
+We believe however that more efforts are required regarding this replication, however we hope that this goes towards bridging the gap between computer science and social sciences.

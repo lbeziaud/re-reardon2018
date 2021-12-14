@@ -1,0 +1,42 @@
+\documentclass{rescience}
+
+\usepackage{subfig}
+
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepgfplotslibrary{colorbrewer}
+
+\definecolor{sns-blue}{HTML}{4c72b0}
+\definecolor{sns-orange}{HTML}{dd8452}
+\definecolor{sns-gray}{HTML}{8c8c8c}
+\definecolor{sns-green}{HTML}{55a868}
+\definecolor{sns-red}{HTML}{c44e52}
+\definecolor{sns-cyan}{HTML}{64b5cd}
+
+\usetikzlibrary{arrows.meta}
+\usetikzlibrary{fit}
+\usetikzlibrary{positioning}
+
+\tikzset{
+  diagonal fill/.style 2 args={%
+    fill=#2,
+    path picture={%
+      \fill[#1, sharp corners]
+      (path picture bounding box.south west) -|
+      (path picture bounding box.north east) --
+      cycle;
+    }
+  }
+}
+\tikzstyle{every picture}+=[font=\sffamily, >=Latex]
+
+\begin{document}
+\input{header.tex}
+\input{content.tex}
+
+\hypersetup{linkcolor=black,urlcolor=darkgray}
+\renewcommand\emph[1]{{\bfseries #1}}
+\setlength\bibitemsep{0pt}
+\printbibliography
+
+\end{document}
