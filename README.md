@@ -6,6 +6,8 @@ Louis Béziaud, 2022
 
 The code to reproduce the figures is located in another [repository](https://github.com/lbeziaud/mosaic).
 
+The files contained in the sub-directory figures_original/ are copyright Wiley.
+
 ### [ReScience C](https://rescience.github.io/) article template
 
 This repository contains the Latex (optional) template for writing a ReScience
