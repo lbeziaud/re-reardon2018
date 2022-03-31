@@ -54,7 +54,7 @@ More precisely, three type of policies can be introduced:
 
 The original experiments are concerned with the impact of using socioeconomic-based (SES) affirmative action combined with race-based recruiting instead of race-based affirmative action. The former two are therefore mostly used together by the colleges.
 
-\begin{figure}
+\begin{figure}[ht]
   \centering
   \begin{tikzpicture}[
     stud/.style={fill=PuOr-K},
@@ -191,57 +191,66 @@ However, our code still uses the past five years.
 
 \section{Experiments}
 
-Figures~\ref{fig:c1} to~\ref{fig:2} present our replications of the plots from the original  paper~\cite{reardon2018levels}\footnote{We did not receive permission to reprint the original plots which are copyright Wiley. To compare our results we refer the reader to the original paper or to the preprints available at \url{https://cepa.stanford.edu/content/what-levels-racial-diversity-can-be-achieved-socioeconomic-based-affirmative-action-evidence-simulation-model}. }.
+Figures~\ref{fig:c1} to~\ref{fig:2} present side by side examples of reproduction, with plots taken from the preprint version~\cite{reardon2018levels_preprint} of the original paper~\cite{reardon2018levels} (due to copyright issues) on the right (b) and replication results on the left (a).
 We attempt to replicate a representative subset of the plots, covering the gist of the model (Figures~\ref{fig:c1}, \ref{fig:c5} and \ref{fig:3a}), SES-based affirmative action and race-based recruitment (Figures~\ref{fig:c4} and \ref{fig:3a}), race-based affirmative action (Figure~\ref{fig:c2}), and the main results of the original paper (Figures~\ref{fig:2}  and \ref{fig:3a}). We use the same legend as the original paper, with college not using positive discrimination policy in \colorbox{sns-blue}{blue} and using positive discrimination policy in \colorbox{sns-orange}{orange}.
 Figures~\ref{fig:A23} and~\ref{fig:A45} present the impact of the different strategies on the final (years 25 to 29) composition--racial and socioeconomic\footnote{Our socioeconomic distribution is represented by the quintiles of the \emph{full} students' resources distribution (not only the enrolled students).}--of enrolled students in colleges for our replication (in \colorbox{sns-red}{red}) and the original paper (in \colorbox{sns-cyan}{cyan}).
 Our replication effort involved experimenting with the full set of plots presented in the original paper. 
 We also resorted to additional plots (not presented in the original paper or the current one) to assess the correlation between probability admission and academic achievement.
 
-\begin{figure}
+\begin{figure}[h]
   \centering
-  \includegraphics[width=.75\linewidth]{figures/figC1.png}
-  \caption{Replication of~\cite[Figure~C1, p.~41]{reardon2018levels}: minority enrollment without using affirmative action or recruiting.}
+  \subfloat[{Replication of~\cite[Figure~C1, p.~41]{reardon2018levels}}]{{\includegraphics[width=.5\linewidth]{figures/figC1.png}}}%
+  \hfill%
+  \subfloat[{Original (reprinted from~\cite[Figure~C1]{reardon2018levels_preprint})}]{{\includegraphics[width=.5\linewidth]{figures_original/figC1.png}}}%
+  \caption{Minority enrollment without using affirmative action or recruiting.}
   \label{fig:c1}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[h]
   \centering
-  \includegraphics[width=.75\linewidth]{figures/figC2.png}
-  \caption{Replication of~\cite[Figure~C2, p.~42]{reardon2018levels}: minority enrollment with the top four schools using ``real-world'' race-based affirmative action (weight of 260).}
+  \subfloat[{Replication of~\cite[Figure~C2, p.~42]{reardon2018levels}}]{{\includegraphics[width=.5\linewidth]{figures/figC2.png}}}%
+  \hfill%
+  \subfloat[{Original (reprinted from~\cite[Figure~C2]{reardon2018levels_preprint})}]{{\includegraphics[width=.5\linewidth]{figures_original/figC2.png}}}%
+  \caption{Minority enrollment with the top four schools using ``real-world'' race-based affirmative action (weight of 260).}
   \label{fig:c2}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[p]
   \centering
-  \includegraphics[width=.75\linewidth]{figures/figC4.png}
-  \caption{Replication of~\cite[Figure~C4, p.~44]{reardon2018levels}: minority enrollment with the top four colleges using strong SES-based affirmative action (weight of 150) and strong race-based recruitment (weight of 100).}
+  \subfloat[{Replication of~\cite[Figure~C4, p.~44]{reardon2018levels}}]{{\includegraphics[width=.5\linewidth]{figures/figC4.png}}}%
+  \hfill%
+  \subfloat[{Original (reprinted from~\cite[Figure~C4]{reardon2018levels_preprint})}]{{\includegraphics[width=.5\linewidth]{figures_original/figC4.png}}}%
+  \caption{Minority enrollment with the top four colleges using strong SES-based affirmative action (weight of 150) and strong race-based recruitment (weight of 100).}
   \label{fig:c4}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[p]
   \centering
-  \includegraphics[width=.75\linewidth]{figures/figC5.png}
+  \subfloat[{Replication of~\cite[Figure~C5, p.~45]{reardon2018levels}}]{{\includegraphics[width=.5\linewidth]{figures/figC5.png}}}%
   \hfill%
-  \caption{Replication of~\cite[Figure~C5, p.~45]{reardon2018levels}: college quality with the top four colleges using strong SES-based affirmative action (weight of 150) and strong race-based recruitment (weight of 100).}
+  \subfloat[{Original (reprinted from~\cite[Figure~C5]{reardon2018levels_preprint})}]{{\includegraphics[width=.5\linewidth]{figures_original/figC5.png}}}%
+  \caption{College quality with the top four colleges using strong SES-based affirmative action (weight of 150) and strong race-based recruitment (weight of 100).}
   \label{fig:c5}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[p]
   \centering
-  \includegraphics[width=.75\linewidth]{figures/fig3A.png}
-  \caption{Replication of~\cite[Figure~3 (left), p.~17]{reardon2018levels}: mean achievement and proportion minority with top four schools using (respectively not using) strong SES-based affirmative action (weight of 150) and strong race-based recruitment (weight of 100) in \colorbox{sns-blue}{blue} (respectively \colorbox{sns-orange}{orange}). 
+  \subfloat[{Replication of~\cite[Figure~3 (left), p.~17]{reardon2018levels}}]{{\includegraphics[width=.65\linewidth]{figures/fig3A.png}}}%
+  \subfloat[{Original (reprinted from~\cite[Figure~3 (left)]{reardon2018levels_preprint})}]{{\includegraphics[width=.3\linewidth]{figures_original/fig3A.png}}}%
+  \caption{Mean achievement and proportion minority with top four schools using (respectively not using) strong SES-based affirmative action (weight of 150) and strong race-based recruitment (weight of 100) in \colorbox{sns-blue}{blue} (respectively \colorbox{sns-orange}{orange}). 
   Arrows start at a school's position in year 14 when it was not using affirmative action, and end at the school's position in year 29.}
   \label{fig:3a}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[p]
   \centering
-  \includegraphics[width=.75\linewidth]{figures/fig2.png}
-  \caption{Replication of~\cite[Figure~2, p.~15]{reardon2018levels}: Black (\colorbox{sns-gray}{gray}) and Hispanic (\colorbox{sns-green}{green}) enrollment in colleges using SES-based affirmative action and race-based recruitment, as a share of estimated enrollment under race-based affirmative action (using estimated real-world affirmative action weight 260).}
+  \subfloat[{Replication of~\cite[Figure~2, p.~15]{reardon2018levels}}]{{\includegraphics[width=.75\linewidth]{figures/fig2.png}}} \\
+  \subfloat[{Original (reprinted from~\cite[Figure~2]{reardon2018levels_preprint})}]{{\includegraphics[width=.9\linewidth]{figures_original/fig2.png}}}%
+  \caption{Black (\colorbox{sns-gray}{gray}) and Hispanic (\colorbox{sns-green}{green}) enrollment in colleges using SES-based affirmative action and race-based recruitment, as a share of estimated enrollment under race-based affirmative action (using estimated real-world affirmative action weight 260).}
   \label{fig:2}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[p]
   \centering
   \subfloat[{Reproduction of~\cite[Figure A2, p.~30]{reardon2018levels}: racial composition}]{{\includegraphics[width=.75\linewidth]{figures/figA2.png}}} \\
   \subfloat[{Reproduction of~\cite[Figure A3, p.~31]{reardon2018levels}: socioeconomic composition}]{{\includegraphics[width=.75\linewidth]{figures/figA3.png}}}
@@ -250,13 +259,15 @@ and race-based recruitment, by affirmative action and recruitment weights.}
   \label{fig:A23}
 \end{figure}
 
-\begin{figure}
+\begin{figure}[p]
   \centering
   \subfloat[{Reproduction of~\cite[Figure A4, p.~32]{reardon2018levels}: racial composition}]{{\includegraphics[width=.75\linewidth]{figures/figA4.png}}} \\
   \subfloat[{Reproduction of~\cite[Figure A5, p.~33]{reardon2018levels}: socioeconomic composition}]{{\includegraphics[width=.75\linewidth]{figures/figA5.png}}} 
   \caption{Replication and original composition of colleges using SES-based and racial affirmative actions, by affirmative action weights.}
   \label{fig:A45}
 \end{figure}
+
+\clearpage % force all figures to be printed before discussing results
 
 \section{Results}\label{sec:results}
 

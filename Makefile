@@ -17,7 +17,7 @@ article: article.pdf
 metadata.tex: metadata.yaml
 	./yaml-to-latex.py -i $< -o $@
 
-FIGURES = $(wildcard figures/*.png)
+FIGURES = $(wildcard figures_original/*.png figures/*.png)
 
 # MAIN LATEXMK RULE
 # -----------------------------------------------------------------------------
