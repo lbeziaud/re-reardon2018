@@ -11,6 +11,7 @@ The proposed model is discussed in great length in the original paper, thus prov
 However, the code of this simulation model is not publicly available.
 In addition, when re-implementing the model, we have faced several issues related to important parts of the model.
 First, some values of parameters were missing--e.g., initial colleges' quality--while others were used inconsistently along the paper--such as affirmative actions.
+For example, the weight of socioeconomic affirmative action is either applied linearly in accordance with the student's resources or with each decrease of one standard deviation in students' resources.
 Second, some parameters described--in natural language--in the paper were actually unused by the model. We tried to guess the appropriate formulas to fit the results and the model description of the original paper.
 Nonetheless, we were able to guess their probable values in most cases by trying and comparing our results with those reported in the paper, thus following a trial and error strategy.
 Although we did not succeed in replicating all the results, the experiments present similar overall trends.
@@ -19,6 +20,7 @@ This paper describes in details our replication attempt.
 \section{Model of college admissions}
 
 \citeauthor{reardon2018levels}~\cite{reardon2018levels} proposes an agent-based simulation of the college admission process, mainly based on the model described in previous work~\cite{reardon2016agent}, with the addition of a racial attribute to students and the inclusion of positive discrimination policies.
+Note that data of~\cite{reardon2018levels}, \cite{reardon2016agent}, and of our replication is fully simulated.
 We provide below a brief overview of the model, referring the interested reader to the original paper for more details. Tables~\ref{tab:const} and~\ref{tab:exp} list the main constants and parameters of the model.
 
 The model consists in two sets of agents: colleges and students.
@@ -133,8 +135,8 @@ We have read this code for clarification but we were not able to run it\footnote
 We have contacted the first two authors of~\cite{reardon2018levels} (Sean F. Reardon and Rachel Baker) in May 2021 but got no answer as of May 2022.
 
 For our implementation, we have used the Python programming language, with most of the processing done using \href{https://numpy.org/}{NumPy}.
-We use \href{https://scikit-learn.org/}{scikit-learn} for the logistic regression (but also used
-\href{https://www.statsmodels.org/}{statsmodels} during development).
+We use \href{https://scikit-learn.org/}{scikit-learn} for the logistic regression%
+\footnote{We also also used \href{https://www.statsmodels.org/}{statsmodels} during development however its interface was less suitable to a pre-parametrized model, which we require for the first 5 iterations.}.
 
 We have experimented with the \href{https://xarray.dev/}{Xarray} library, which provides labeled multidimensional arrays.
 Our motivation was to deduplicate the join between students and colleges.
@@ -371,11 +373,12 @@ We compare below our replicated results to the original results.
 \begin{description}
 
 \item[Figure~\ref{fig:c1}: success.] The results without using positive discrimination policy presented on Figure~\ref{fig:c1} are similar to the original paper.
+The first years appear to exhibit a reversed trend. This could be due to difference in the way the logistic regression is being fitted.
 
 \item[Figure~\ref{fig:c2}: partial success.] Figure~\ref{fig:c2} shows that we replicated the main trends but still indicates an issue with race-based affirmative action: our replication leads to a greater impact on minority students.
 
 \item [Figure~\ref{fig:c4}: partial success.] Looking at Figure~\ref{fig:c4}, the combination of SES-based affirmative action and race-based recruitment is satisfactory in terms of range but the average impact on minority students is lower than the original.
-However, race-based and SES-based affirmative actions use the same mechanism, which lead us to believe that race‐based recruitment is successfully replicated with a potential issue for SES-based affirmative (as with Figure~\ref{fig:c2}).
+However, race-based and SES-based affirmative actions use the same mechanism, which leads us to believe that race‐based recruitment is successfully replicated with a potential issue for SES-based affirmative (as with Figure~\ref{fig:c2}).
 
 \item [Figure~\ref{fig:c5}: success.]  The behavior of quality on Figure~\ref{fig:c5} is similar to the original paper, indicating the adequacy of our quality initialization. A strong claim in the original paper is the decline in quality of colleges using policies, which is not as clear in our replication as only two of the four active colleges suffer such decline. This might be attributed to the lower impact of our actions, as highlighted by the other figures.
 
@@ -384,6 +387,7 @@ However, race-based and SES-based affirmative actions use the same mechanism, wh
 It is important to note that this figure corresponds to an average over 10 runs (as the original paper), which requires the colleges to be sorted by quality. 
 
 The additional left-most arrow covers students who do not enroll. It is unspecified however whether it captures students who do not enroll while having applied, being admitted or without condition. We use the latter.
+% TODO: what happens if you use the former? Do the results change?
 
 \item[Figure~\ref{fig:2}: partial success.]  Figure~\ref{fig:2} shows a successful replication of the general tendency of the model (\emph{i.e.}, the relative values) and a failure in replicating the absolute numbers, probably due to the issue related to the affirmative action observed above.
 
