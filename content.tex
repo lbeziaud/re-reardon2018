@@ -172,8 +172,7 @@ Note that our interpretation is not totally satisfactory (see Section~\ref{sec:r
 
 \begin{itemize}
 
-\item\textquote[{\cite[Table~1]{reardon2018levels}}]{Quality
-reliability and own achievement reliability \emph{bounded by minimum values of 0.5 and maximum values of 0.9.}}
+\item\textquote[{\cite[Table~1]{reardon2018levels}}]{Quality reliability and own achievement reliability \emph{bounded by minimum values of 0.5 and maximum values of 0.9.}}
 
 \item\textquote[{\cite[Appendix~C]{reardon2018levels}}]{the reliability of student perceptions of their own achievement, is a function of student resources and \emph{bounded between 0.5 and 0.9}}
 
@@ -262,7 +261,9 @@ Every experiment results from an average of 10 runs.
   \centering
   \subfloat[{Original (reprinted from~\cite[Figure~C1]{reardon2018levels_preprint})}]{{\includegraphics[width=.49\textwidth]{figures_original/figC1.png}}}%
   \hfill%
-  \subfloat[{Replication}]{{\includegraphics[width=.49\textwidth]{figures/figC1.png}}}%
+  \subfloat[{Replication}]{%
+    \raisebox{6mm}[0pt][0pt]{\includegraphics[width=.4\textwidth]{figures/figC1.png}}
+  }%
   \caption{Minority enrollment without using affirmative action or recruiting.}
   \label{fig:c1}
 \end{figure}
@@ -299,7 +300,7 @@ Every experiment results from an average of 10 runs.
   \subfloat[{Original (reprinted from~\cite[Figure~D1]{reardon2018levels_preprint})}]{{\includegraphics[width=.48\textwidth]{figures_original/figD1.png}}}%
   \hfill%
   \subfloat[{Replication}]{{\includegraphics[width=.51\textwidth]{figures/figD1.png}}}%
-  \caption{Mean achievement and proportion minority with top four colleges using (respectively not using) strong SES-based affirmative action (weight of 150) and strong race-based recruitment (weight of 100) on the left sides, and real-world race-based affirmative action (weight of 260) on the right sides.  
+  \caption{Mean achievement and proportion low-income with top four colleges using (respectively not using) strong SES-based affirmative action (weight of 150) and strong race-based recruitment (weight of 100) on the left sides, and real-world race-based affirmative action (weight of 260) on the right sides.
   Arrows start at a college's position in year 14 when it was not using affirmative action, and end at the college's position in year 29.
   The left-most arrow (in red on our figures) captures students who do not enroll.}
   \label{fig:3a}
@@ -307,16 +308,17 @@ Every experiment results from an average of 10 runs.
 
 \begin{figure}[p]
   \centering
-  \begin{minipage}{.53\textwidth}
+  \begin{minipage}[t]{.53\textwidth}
     \subfloat[{Original (reprinted from~\cite[Figure~2]{reardon2018levels_preprint})}]{%
-      \shortstack{%
-        {\includegraphics[width=\textwidth]{figures_original/fig2_continued.png}} \\
-        {\includegraphics[width=\textwidth]{figures_original/fig2.png}}
-      }
+      % \shortstack{%
+      %   {\includegraphics[width=\textwidth]{figures_original/fig2_continued.png}} \\
+      %   {\includegraphics[width=\textwidth]{figures_original/fig2.png}}
+      % }
+      \includegraphics[width=\textwidth]{figures_original/fig2_combined.png}
     }%
   \end{minipage}%
   \hfill%
-  \begin{minipage}{.44\textwidth}
+  \begin{minipage}[t]{.45\textwidth}
     \subfloat[{Replication}]{{\includegraphics[width=\textwidth]{figures/fig2.png}}}
   \end{minipage}%
   \caption{Black and Hispanic enrollment in colleges using SES-based affirmative action and race-based recruitment, as a share of estimated enrollment under race-based affirmative action (using estimated real-world affirmative action weight 260).}
@@ -377,12 +379,12 @@ The first years appear to exhibit a reversed trend. This could be due to differe
 
 \item[Figure~\ref{fig:c2}: partial success.] Figure~\ref{fig:c2} shows that we replicated the main trends but still indicates an issue with race-based affirmative action: our replication leads to a greater impact on minority students.
 
-\item [Figure~\ref{fig:c4}: partial success.] Looking at Figure~\ref{fig:c4}, the combination of SES-based affirmative action and race-based recruitment is satisfactory in terms of range but the average impact on minority students is lower than the original.
+\item [Figure~\ref{fig:c4}: partial success.] Looking at Figure~\ref{fig:c4}, the combination of SES-based affirmative action and race-based recruitment is satisfactory in terms of range but the average impact on minority students is lower than the original. This is also the case with Figure~\ref{fig:c3} in Appendix~\ref{sec:add} which considers the same parameters.
 However, race-based and SES-based affirmative actions use the same mechanism, which leads us to believe that race‐based recruitment is successfully replicated with a potential issue for SES-based affirmative (as with Figure~\ref{fig:c2}).
 
 \item [Figure~\ref{fig:c5}: success.]  The behavior of quality on Figure~\ref{fig:c5} is similar to the original paper, indicating the adequacy of our quality initialization. A strong claim in the original paper is the decline in quality of colleges using policies, which is not as clear in our replication as only two of the four active colleges suffer such decline. This might be attributed to the lower impact of our actions, as highlighted by the other figures.
 
-\item[Figure~\ref{fig:3a}: partial success.]  Figure~\ref{fig:3a} suffers from the same issue of affirmative actions as Figure~\ref{fig:c2} but the general behavior is similar to the paper.
+\item[Figure~\ref{fig:3a}: partial success.]  Figure~\ref{fig:3a} suffers from the same issue of affirmative actions as Figure~\ref{fig:c2}, but the general behavior is similar to the paper. Figures~\ref{fig:d2} and~\ref{fig:d3} in Appendix~\ref{sec:add} present the same plot for minority and low-income students with varying number of active colleges.
 
 It is important to note that this figure corresponds to an average over 10 runs (as the original paper), which requires the colleges to be sorted by quality. 
 
