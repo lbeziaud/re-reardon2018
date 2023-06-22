@@ -388,8 +388,7 @@ However, race-based and SES-based affirmative actions use the same mechanism, wh
 
 It is important to note that this figure corresponds to an average over 10 runs (as the original paper), which requires the colleges to be sorted by quality. 
 
-The additional left-most arrow covers students who do not enroll. It is unspecified however whether it captures students who do not enroll while having applied, being admitted or without condition. We use the latter.
-% TODO: what happens if you use the former? Do the results change?
+The additional left-most arrow covers students who do not enroll. It is unspecified however whether it captures students who do not enroll while having applied, being admitted or without condition. We use the latter (see Appendix~\ref{sec:unenroll}).
 
 \item[Figure~\ref{fig:2}: partial success.]  Figure~\ref{fig:2} shows a successful replication of the general tendency of the model (\emph{i.e.}, the relative values) and a failure in replicating the absolute numbers, probably due to the issue related to the affirmative action observed above.
 
@@ -414,21 +413,21 @@ We believe however that more efforts are required for this replication to be com
 
 \section{SES-based affirmative action with alternative assumptions}
 
-\begin{figure}[ht!]
+\begin{figure}[H]
   \centering
   \includegraphics[width=.79\textwidth]{figures/figC4_f1.png}
   \caption{Minority enrollment with the top four colleges using strong SES-based affirmative action (weight of 150) and strong race-based recruitment (weight of 100) \emph{using the formula provided in~\cite{reardon2018levels} for the SES-based affirmative action}. See Section~\ref{sec:diff}}
   \label{fig:c4_f1}
 \end{figure}
 
-\begin{figure}[ht!]
+\begin{figure}[H]
   \centering
   \includegraphics[width=.79\textwidth]{figures/figC4_pen.png}
   \caption{Minority enrollment with the top four colleges using strong SES-based affirmative action (weight of 150) and strong race-based recruitment (weight of 100) \emph{with penalization of high-income students (no truncation to $\geq 0$)}. See Section~\ref{sec:diff}}
   \label{fig:c4_pen}
 \end{figure}
 
-\begin{figure}[ht!]
+\begin{figure}[H]
   \centering
   \includegraphics[width=.79\textwidth]{figures/figC4_pq07.png}
   \caption{Minority enrollment with the top four colleges using strong SES-based affirmative action (weight of 150) and strong race-based recruitment (weight of 100) \emph{truncating reliability of student perceptions of college quality to 0.7}. See Section~\ref{sec:diff}}
@@ -437,27 +436,45 @@ We believe however that more efforts are required for this replication to be com
 
 \section{Additional figures}\label{sec:add}
 
-\begin{figure}[p]
+\begin{figure}[H]
   \centering
   \includegraphics[width=.79\textwidth]{figures/figC3.png}
   \caption{\textquote[{\cite[Figure~C3]{reardon2018levels_preprint}}]{Changes in Black and Hispanic Enrollment over Time with Top 4 Colleges using Moderate SES-Based Affirmative Action and Moderate Race-Based Recruiting}}
   \label{fig:c3}
 \end{figure}
 
-\begin{figure}[p]
+\begin{figure}[H]
   \centering
   \includegraphics[width=.89\textwidth]{figures/figD2.png}
   \caption{\textquote[{\cite[Figure~D2]{reardon2018levels_preprint}}]{The mean achievement and proportion minority by number of schools using admissions policies.}}
   \label{fig:d2}
 \end{figure}
 
-\begin{figure}[p]
+\begin{figure}[H]
   \centering
   \includegraphics[width=.89\textwidth]{figures/figD3.png}
   \caption{\textquote[{\cite[Figure~D3]{reardon2018levels_preprint}}]{The mean achievement and proportion low-income by number of schools using affirmative
 action.}}
   \label{fig:d3}
 \end{figure}
+
+\section{Conditional un-enrollment}\label{sec:unenroll}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{l c c c} \toprule
+      \textbf{Condition} & \textbf{Mean achievement} & \textbf{Prop. minority students} & \textbf{Prop. low-income students} \\ \midrule
+      None               & 990.01                    & 0.35                             & 0.60                               \\
+      Applied            & 979.33                    & 0.36                             & 0.59                               \\
+      Admitted           & 1177.59                   & 0.17                             & 0.40                               \\ \midrule
+      \textbf{Original}  & $\sim 800$                & $\sim 0.6$                       & $\sim 0.5$                         \\ \bottomrule
+    \end{tabular}
+    \caption{Values for Figure~\ref{fig:3a} (red arrow only) when considering students who do not enroll without condition, while having applied, or while being admitted. The last row displays the values from the original figures.
+      Restricting to student having applied gives similar results as having no condition, while capturing only students with an admission gives values further to the original ones.}
+    \label{tab:unenroll}
+\end{table}
+
+
 \end{appendices}
 
 \clearpage
