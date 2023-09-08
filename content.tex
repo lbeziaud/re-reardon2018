@@ -136,7 +136,7 @@ We have contacted the first two authors of~\cite{reardon2018levels} (Sean F. Rea
 
 For our implementation, we have used the Python programming language, with most of the processing done using \href{https://numpy.org/}{NumPy}.
 We use \href{https://scikit-learn.org/}{scikit-learn} for the logistic regression%
-\footnote{We also also used \href{https://www.statsmodels.org/}{statsmodels} during development however its interface was less suitable to a pre-parametrized model, which we require for the first 5 iterations.}.
+\footnote{We also used \href{https://www.statsmodels.org/}{statsmodels} during development however its interface was less suitable to a pre-parametrized model, which we require for the first 5 iterations.}.
 
 We have experimented with the \href{https://xarray.dev/}{Xarray} library, which provides labeled multidimensional arrays.
 Our motivation was to deduplicate the join between students and colleges.
@@ -163,7 +163,7 @@ policies, which is applied \emph{linearly in accordance with the student's resou
 
 \end{itemize}
 
-Using $H \times resources_s$ as in the first quote would advantage high-income students, which is the opposite of the objective. Moreover, the weight would not follow the description of the next two quotes, which involve the standard deviation. In our implementation, a weight $H \times \max(-\mathrm{zscore}({resources}_s), 0)$ is added to the score of low-income students students, with $\mathrm{zscore}$ being the standard score\footnote{The zscore variable is the number of standard deviations by which the value of a raw score is above or below the mean value of what is being observed or measured} with respect to $resources$, and $H$ the size of the weight (\emph{e.g.}, 0, 50, 100 and 150).
+Using $H \times resources_s$ as in the first quote would advantage high-income students, which is the opposite of the objective. Moreover, the weight would not follow the description of the next two quotes, which involve the standard deviation. In our implementation, a weight $H \times \max(-\mathrm{zscore}({resources}_s), 0)$ is added to the score of low-income students, with $\mathrm{zscore}$ being the standard score\footnote{The zscore variable is the number of standard deviations by which the value of a raw score is above or below the mean value of what is being observed or measured} with respect to $resources$, and $H$ the size of the weight (\emph{e.g.}, 0, 50, 100 and 150).
 We keep only negative values of the standard score (see Figure~\ref{fig:c4_pen} for a version without truncation) to impact only low-income students (``for each decrease of one standard
 deviation'').
 Note that our interpretation is not totally satisfactory (see Section~\ref{sec:results}), however we had no success either with the formula of the first quote (see Figure~\ref{fig:c4_f1}).
