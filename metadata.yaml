@@ -19,6 +19,7 @@ authors:
     email: louis.beziaud@irisa.fr
     affiliations: 1,2,*
   - name: Sébastien Gambs
+    orcid: 0000-0002-7326-7377
     email: gambs.sebastien@uqam.ca
     affiliations: 2
 
@@ -44,7 +45,7 @@ keywords: rescience c, Python
 code:
   - url: https://github.com/lbeziaud/mosaic
   - doi: 
-  - swh: 
+  - swh: swh:1:rev:4691a01b439094fc2460717d1a6944ce80c27d09
 
 # Data URL and DOI (optional if no data)
 data:
@@ -59,7 +60,7 @@ replication:
  - doi: 10.1002/pam.22056 # Regular digital object identifier
 
 # Don't forget to surround abstract with double quotes
-abstract: ""
+abstract: "Assessing the impact of public policies, e.g., affirmative actions for college admission, is crucial to understand the impact of high stake decisions on society but real‐life experiments are complex and can pose ethical challenges hard to overcome. Statistical models and computerized simulations might be valuable tools for circumventing both the complexity and the ethical issues in these contexts. Reardon et al. have recently proposed a statistical agent-based model for observing the impact of affirmative actions on college admissions. In this paper, we present the results obtained by trying to re-implement their model and to replicate their results. In a nutshell, while we have been able to replicate the main trends observed in the original paper, the original results and the replicated results diverge slightly, at least partly due to unspecified or inconsistent parameters. The reproduction task has been made harder by the unavailability of the code. Our code is written in Python and fully documented. We make it available online for facilitating additional experiments with this sociotechnical system."
 
 # Bibliography file (yours)
 bibliography: bibliography.bib
@@ -84,17 +85,17 @@ language: Python
 
 # For example, the URL of the GitHub issue where review actually occured
 review: 
-  - url: 
+  - url: https://github.com/ReScience/submissions/issues/64
 
 contributors:
-  - name:
-    orcid: 
+  - name: Olivia Guest
+    orcid: 0000-0002-1891-0972
     role: editor
-  - name:
-    orcid:
+  - name: Lukas Wallrich
+    orcid: 0000-0003-2121-5177
     role: reviewer
-  - name:
-    orcid:
+  - name: Cosima Meyer
+    orcid: 0000-0002-7472-2298
     role: reviewer
 
 # This information will be provided by the editor
