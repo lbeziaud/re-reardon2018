@@ -1,4 +1,6 @@
-# Replication of [Reardon et al. 2018](https://doi.org/10.1002/pam.22056)
+# Replication of [Simulating socioeconomic-based affirmative action](https://doi.org/10.1002/pam.22056)
+
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10255347.svg)](https://doi.org/10.5281/zenodo.10255347)
 
 Louis Béziaud, 2022
 
